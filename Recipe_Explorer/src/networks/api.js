@@ -4,4 +4,5 @@ export const API = {
   LIST_CUISINES: `${BASE_URL}/list.php?a=list`,
   CATEGORIES: `${BASE_URL}/categories.php`,
   MEALS_BY_CUISINE: (cuisine) => `${BASE_URL}/filter.php?a=${cuisine}`,
+  MEAL_DETAILS: (id) => `${BASE_URL}/lookup.php?i=${id}`,
 };

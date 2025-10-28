@@ -1,3 +1,4 @@
+import DishDetails from "./pages/Dish_Detail_Page"
 import Landing_Page from "./pages/Landing_page"
 import Layout from "./pages/layout"
 
@@ -6,8 +7,7 @@ function App() {
   return (
     <>
       <Layout>
-        <Landing_Page></Landing_Page>
-        <h1>Body</h1>
+        <DishDetails mealId={52771}/>
       </Layout>
     </>
   )
