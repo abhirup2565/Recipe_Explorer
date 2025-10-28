@@ -32,11 +32,18 @@ export default function CuisineDropdown({ selectedCuisine, onSelectCuisine }) {
   return (
     <div className="flex justify-center my-6">
       <select
-        value={selectedCuisine}
-        onChange={(e) => onSelectCuisine(e.target.value)}
+        value={selectedCuisine.value}
+        onChange={(e) => {
+              const value = e.target.value;
+              if (value === "allCategory") {
+                onSelectCuisine({ type: "allCategory", value: "allCategory" });
+              } else {
+                onSelectCuisine({ type: "cuisine", value });
+              }
+            }}
         className="border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 bg-white"
       >
-        <option value="category">All Cuisine</option>
+        <option value="allCategory">All Cuisine</option>
         {cuisines.map((item) => (
           <option key={item.strArea} value={item.strArea}>
             {item.strArea}

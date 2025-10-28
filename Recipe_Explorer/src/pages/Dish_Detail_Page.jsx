@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchSafe from "../networks/fetchSafe";
 import { API } from "../networks/api";
-import storageFactory from "../utils/storageFactory"; // import the reusable factory
+import storageFactory from "../utils/storageFactory";
+import { extractIngredients } from "../utils/extractIngredients";
+import Button from "../components/Button";
+import Badge from "../components/Badge";
 
 export default function DishDetails({ mealId }) {
   const [meal, setMeal] = useState(null);
@@ -12,6 +15,7 @@ export default function DishDetails({ mealId }) {
   const cartManager = storageFactory("cart");
   const favoriteManager = storageFactory("favorites");
 
+  // Fetch meal details
   useEffect(() => {
     const loadMeal = async () => {
       setLoading(true);
@@ -33,20 +37,8 @@ export default function DishDetails({ mealId }) {
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!meal) return null;
 
-  // Extract ingredients + measures
-  const ingredients = [];
-  for (let i = 1; i <= 20; i++) {
-    const ingredient = meal[`strIngredient${i}`];
-    const measure = meal[`strMeasure${i}`];
-    if (ingredient && ingredient.trim()) {
-      ingredients.push({
-        id: `${meal.idMeal}-${i}`, // unique id for cart item
-        name: ingredient,
-        image: meal.strMealThumb,
-        description: `${measure} of ${ingredient}`,
-      });
-    }
-  }
+  // Extract ingredients
+  const ingredients = extractIngredients(meal);
 
   // Add handlers
   const handleAddToFavorites = () => {
@@ -72,12 +64,8 @@ export default function DishDetails({ mealId }) {
     <div className="max-w-5xl mx-auto px-6 py-10">
       {/* Top Badges */}
       <div className="flex flex-wrap gap-3 mb-6">
-        <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-          {meal.strCategory}
-        </span>
-        <span className="bg-gray-800 text-white px-3 py-1 rounded-full text-sm font-medium">
-          {meal.strArea}
-        </span>
+        <Badge text={meal.strCategory} color="yellow" />
+        <Badge text={meal.strArea} color="gray" variant="filled" />
       </div>
 
       {/* Image & Title */}
@@ -93,12 +81,7 @@ export default function DishDetails({ mealId }) {
 
           {/* Add to Favorites */}
           <div className="flex gap-3 mb-4">
-            <button
-              onClick={handleAddToFavorites}
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition"
-            >
-              ❤️ Add to Favorites
-            </button>
+            <Button text="❤️ Add to Favorites" onClick={handleAddToFavorites} color="gray" variant="filled" />
           </div>
 
           {/* Video Link */}
@@ -107,9 +90,8 @@ export default function DishDetails({ mealId }) {
               href={meal.strYoutube}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
             >
-              🎥 Watch Tutorial
+              <Button text="🎥 Watch Tutorial" color="red" variant="filled" />
             </a>
           )}
         </div>
@@ -125,12 +107,12 @@ export default function DishDetails({ mealId }) {
               className="flex items-center justify-between bg-gray-50 border rounded-lg p-3"
             >
               <span className="font-medium">{item.description}</span>
-              <button
+              <Button
+                text="Add to Cart"
+                color="yellow"
+                variant="filled"
                 onClick={() => handleAddToCart(item)}
-                className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition"
-              >
-                Add to Cart
-              </button>
+              />
             </li>
           ))}
         </ul>
@@ -146,18 +128,18 @@ export default function DishDetails({ mealId }) {
 
       {/* Bottom Actions */}
       <div className="mt-10 flex gap-4">
-        <button
+        <Button
+          text="❤️ Add to Favorites"
+          color="gray"
+          variant="filled"
           onClick={handleAddToFavorites}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition"
-        >
-          ❤️ Add to Favorites
-        </button>
-        <button
+        />
+        <Button
+          text="🛒 Add All Ingredients to Cart"
+          color="yellow"
+          variant="filled"
           onClick={handleAddAllToCart}
-          className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition"
-        >
-          🛒 Add All Ingredients to Cart
-        </button>
+        />
       </div>
     </div>
   );
