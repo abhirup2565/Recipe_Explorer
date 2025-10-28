@@ -9,6 +9,12 @@ function App() {
   return (
     <>
       <div>
+        <div className="flex h-screen items-center justify-center bg-gray-100">
+      <h1 className="text-4xl font-bold text-blue-600">
+        Tailwind v4 is working! 🚀
+      </h1>
+    </div>
+        <h1 className="text-3xl font-bold text-green-600">Tailwind 4 working!</h1>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
