@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import fetchSafe from "../networks/fetchSafe";
 import { API } from "../networks/api";
+import storageFactory from "../utils/storageFactory"; // import the reusable factory
 
 export default function DishDetails({ mealId }) {
   const [meal, setMeal] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Initialize storage managers
+  const cartManager = storageFactory("cart");
+  const favoriteManager = storageFactory("favorites");
 
   useEffect(() => {
     const loadMeal = async () => {
@@ -34,9 +39,34 @@ export default function DishDetails({ mealId }) {
     const ingredient = meal[`strIngredient${i}`];
     const measure = meal[`strMeasure${i}`];
     if (ingredient && ingredient.trim()) {
-      ingredients.push({ ingredient, measure });
+      ingredients.push({
+        id: `${meal.idMeal}-${i}`, // unique id for cart item
+        name: ingredient,
+        image: meal.strMealThumb,
+        description: `${measure} of ${ingredient}`,
+      });
     }
   }
+
+  // Add handlers
+  const handleAddToFavorites = () => {
+    favoriteManager.add({
+      id: meal.idMeal,
+      name: meal.strMeal,
+      image: meal.strMealThumb,
+    });
+    alert(`${meal.strMeal} added to favorites!`);
+  };
+
+  const handleAddToCart = (item) => {
+    cartManager.add(item);
+    alert(`${item.name} added to cart!`);
+  };
+
+  const handleAddAllToCart = () => {
+    cartManager.add(ingredients);
+    alert("All ingredients added to cart!");
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
@@ -63,7 +93,10 @@ export default function DishDetails({ mealId }) {
 
           {/* Add to Favorites */}
           <div className="flex gap-3 mb-4">
-            <button className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition">
+            <button
+              onClick={handleAddToFavorites}
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition"
+            >
               ❤️ Add to Favorites
             </button>
           </div>
@@ -86,15 +119,16 @@ export default function DishDetails({ mealId }) {
       <section className="mt-10">
         <h2 className="text-2xl font-semibold mb-4">🧂 Ingredients</h2>
         <ul className="space-y-2">
-          {ingredients.map((item, idx) => (
+          {ingredients.map((item) => (
             <li
-              key={idx}
+              key={item.id}
               className="flex items-center justify-between bg-gray-50 border rounded-lg p-3"
             >
-              <span className="font-medium">
-                {item.ingredient} — {item.measure}
-              </span>
-              <button className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">
+              <span className="font-medium">{item.description}</span>
+              <button
+                onClick={() => handleAddToCart(item)}
+                className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition"
+              >
                 Add to Cart
               </button>
             </li>
@@ -112,10 +146,16 @@ export default function DishDetails({ mealId }) {
 
       {/* Bottom Actions */}
       <div className="mt-10 flex gap-4">
-        <button className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition">
+        <button
+          onClick={handleAddToFavorites}
+          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition"
+        >
           ❤️ Add to Favorites
         </button>
-        <button className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">
+        <button
+          onClick={handleAddAllToCart}
+          className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition"
+        >
           🛒 Add All Ingredients to Cart
         </button>
       </div>

@@ -4,7 +4,7 @@
  * Each manager interacts with localStorage under a unique key.
  */
 
-export const createStorageManager = (key, field) => {
+const createStorageManager = (key, field) => {
   const get = () => {
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data)[field] : [];
@@ -45,3 +45,5 @@ export const createStorageManager = (key, field) => {
 
   return { get, add, remove, clear, exists };
 };
+
+export default createStorageManager
