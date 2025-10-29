@@ -29,6 +29,7 @@ const Landing_Page = ()=>{
     }
     };
 
+
     return (<>
         <div className="flex flex-wrap justify-center items-center gap-4 my-6">
             <CuisineDropdown
@@ -48,7 +49,7 @@ const Landing_Page = ()=>{
                     color="gray"
                     variant="outline"
                     className="w-full sm:w-auto"
-                    //onClick={handleIngredients}
+                    onClick={()=>setSelectedCuisine({ type: "Ingredients", value: "Ingredients" })}
                 />
             </div>
         </div>

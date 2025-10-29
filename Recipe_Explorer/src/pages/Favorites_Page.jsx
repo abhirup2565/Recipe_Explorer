@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import createStorageManager from "../utils/storageFactory";
+import Button from "../components/Button";
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState([]);
 
   // Initialize favorites storage manager
-  const favoriteManager = createStorageManager("myAppStorage", "favorites");
+  const favoriteManager = createStorageManager("favorites");
 
   // Load favorites on mount
   useEffect(() => {
@@ -63,6 +64,11 @@ export default function FavoritesPage() {
             </Link>
           </div>
         ))}
+      </div>
+      <div className="text-center mt-6">
+        <Button text="Clear All" color="red" variant="filled" onClick={()=> {favoriteManager.clear()
+          setFavorites([])
+        }}/>
       </div>
     </div>
   );

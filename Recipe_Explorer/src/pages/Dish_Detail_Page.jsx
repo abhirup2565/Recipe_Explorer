@@ -12,8 +12,8 @@ export default function DishDetails({ mealId }) {
   const [loading, setLoading] = useState(false);
 
   // Initialize storage managers
-  const cartManager = createStorageManager("myAppStorage", "cart");
-  const favoriteManager = createStorageManager("myAppStorage", "favorites");
+  const cartManager = createStorageManager("cart");
+  const favoriteManager = createStorageManager("favorites");
 
   // Fetch meal details
   useEffect(() => {

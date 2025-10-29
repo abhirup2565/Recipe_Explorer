@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import createStorageManager from "../utils/storageFactory";
 import { Trash2 } from "lucide-react";
+import Button from "../components/Button";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
 
   // Initialize localStorage manager
-  const cartManager = createStorageManager("myAppStorage", "cart");
+  const cartManager = createStorageManager("cart");
 
   // Fetch cart items on mount
   useEffect(() => {
@@ -45,6 +46,11 @@ export default function CartPage() {
           ))}
         </div>
       )}
+      <div className="text-center mt-6">
+          <Button text="Clear All" color="red" variant="filled" onClick={()=> {cartManager.clear()
+            setCart([])
+          }}/>
+      </div>
     </div>
   );
 }
