@@ -6,4 +6,5 @@ export const API = {
   Filter_Category: (category) => `${BASE_URL}/filter.php?c=${category}`,
   MEALS_BY_CUISINE: (cuisine) => `${BASE_URL}/filter.php?a=${cuisine}`,
   MEAL_DETAILS: (id) => `${BASE_URL}/lookup.php?i=${id}`,
+  RANDOM_MEAL: `${BASE_URL}/random.php`
 };

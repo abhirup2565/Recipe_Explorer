@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import fetchSafe from "../networks/fetchSafe";
 import { API } from "../networks/api";
-import storageFactory from "../utils/storageFactory";
+import createStorageManager from "../utils/storageFactory";
 import { extractIngredients } from "../utils/extractIngredients";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
@@ -12,8 +12,8 @@ export default function DishDetails({ mealId }) {
   const [loading, setLoading] = useState(false);
 
   // Initialize storage managers
-  const cartManager = storageFactory("cart");
-  const favoriteManager = storageFactory("favorites");
+  const cartManager = createStorageManager("myAppStorage", "cart");
+  const favoriteManager = createStorageManager("myAppStorage", "favorites");
 
   // Fetch meal details
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function DishDetails({ mealId }) {
   const ingredients = extractIngredients(meal);
 
   // Add handlers
-  const handleAddToFavorites = () => {
+  const handleAddToFavorites = (meal) => {
     favoriteManager.add({
       id: meal.idMeal,
       name: meal.strMeal,
@@ -81,7 +81,7 @@ export default function DishDetails({ mealId }) {
 
           {/* Add to Favorites */}
           <div className="flex gap-3 mb-4">
-            <Button text="❤️ Add to Favorites" onClick={handleAddToFavorites} color="gray" variant="filled" />
+            <Button text="❤️ Add to Favorites" onClick={()=>handleAddToFavorites(meal)} color="gray" variant="filled" />
           </div>
 
           {/* Video Link */}
@@ -132,7 +132,7 @@ export default function DishDetails({ mealId }) {
           text="❤️ Add to Favorites"
           color="gray"
           variant="filled"
-          onClick={handleAddToFavorites}
+          onClick={()=>handleAddToFavorites(meal)}
         />
         <Button
           text="🛒 Add All Ingredients to Cart"

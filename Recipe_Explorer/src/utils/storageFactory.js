@@ -7,7 +7,8 @@
 const createStorageManager = (key, field) => {
   const get = () => {
     const data = localStorage.getItem(key);
-    return data ? JSON.parse(data)[field] : [];
+    const parsed = data ? JSON.parse(data) : {};
+    return Array.isArray(parsed[field]) ? parsed[field] : [];
   };
 
   const save = (items) => {
