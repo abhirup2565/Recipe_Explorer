@@ -11,7 +11,7 @@ function Header() {
       {/* Left: Logo / Brand */}
       
       <Link to="/" className="text-2xl font-bold text-gray-800">
-        Recipe<span className="text-yellow-500">Explorer</span>
+        Recipe<span className="text-yellow-500">Ideas</span>
       </Link>
 
       {/* Center: Search */}

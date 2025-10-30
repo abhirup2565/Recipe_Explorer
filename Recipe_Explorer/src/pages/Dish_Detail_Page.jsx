@@ -5,6 +5,7 @@ import createStorageManager from "../utils/storageFactory";
 import { extractIngredients } from "../utils/extractIngredients";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
+import BackButton from "../components/BackButton";
 
 export default function DishDetails({ mealId }) {
   const [meal, setMeal] = useState(null);
@@ -62,6 +63,7 @@ export default function DishDetails({ mealId }) {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
+      <BackButton/>
       {/* Top Badges */}
       <div className="flex flex-wrap gap-3 mb-6">
         <Badge text={meal.strCategory} color="yellow" />

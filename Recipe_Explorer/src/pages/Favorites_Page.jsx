@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import createStorageManager from "../utils/storageFactory";
 import Button from "../components/Button";
+import BackButton from "../components/BackButton";
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState([]);
@@ -25,6 +26,7 @@ export default function FavoritesPage() {
   if (!favorites || favorites.length === 0) {
     return (
       <div className="min-h-[100vh] flex flex-col items-center justify-center text-center text-gray-600">
+        <BackButton/>
         <p className="text-lg font-medium">No favorites added yet 💔</p>
       </div>
     );
@@ -33,8 +35,8 @@ export default function FavoritesPage() {
   // Display favorites grid
   return (
     <div className="max-w-6xl mx-auto px-6 py-10 min-h-[100vh]">
+      <BackButton/>
       <h1 className="text-2xl font-bold text-center mb-6">Your Favorites ❤️</h1>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {favorites.map((item) => (
           <div

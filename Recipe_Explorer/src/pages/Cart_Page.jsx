@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import createStorageManager from "../utils/storageFactory";
 import { Trash2 } from "lucide-react";
 import Button from "../components/Button";
+import BackButton from "../components/BackButton";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -22,6 +23,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-4 min-h-[100vh]">
+      <BackButton/>
       <h1 className="text-2xl font-semibold mb-6 text-center">Your Cart</h1>
 
       {cart.length === 0 ? (
@@ -44,13 +46,13 @@ export default function CartPage() {
               />
             </div>
           ))}
-        </div>
-      )}
-      <div className="text-center mt-6">
+          <div className="text-center mt-6">
           <Button text="Clear All" color="red" variant="filled" onClick={()=> {cartManager.clear()
             setCart([])
           }}/>
       </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -27,11 +27,6 @@ export const DisplayProvider = ({ children }) => {
     });
   };
 
-  // reset completely to home
-  const resetState = () => {
-    setStack([{ type: "allCategory", value: "allCategory" }]);
-  };
-
   return (
     <DisplayContext.Provider
       value={{
@@ -39,7 +34,6 @@ export const DisplayProvider = ({ children }) => {
         currentState,
         goForward,
         goBack,
-        resetState,
       }}
     >
       {children}

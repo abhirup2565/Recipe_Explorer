@@ -7,7 +7,7 @@ import fetchSafe from "../networks/fetchSafe";
 import { API } from "../networks/api";
 
 const Landing_Page = ()=>{
-    const { currentState, goForward, goBack, resetState } = useDisplay();
+    const { currentState, goForward, goBack } = useDisplay();
     const navigate = useNavigate();
 
     const handleSurpriseMe = async () => {

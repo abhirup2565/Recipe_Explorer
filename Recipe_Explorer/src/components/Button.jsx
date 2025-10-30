@@ -17,7 +17,7 @@ export default function Button({ text, onClick = () => {}, color = "blue", varia
 
   const colorClasses = variant === "filled" ? filledMap[color] : colorMap[color];
   return (
-    <button onClick={onClick} className={`${base} ${colorClasses}`}>
+    <button onClick={onClick} className={`${base} ${colorClasses} mb-5`}>
       {text}
     </button>
   );

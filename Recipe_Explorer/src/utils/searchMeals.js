@@ -1,25 +1,22 @@
-// utils/searchMeals.js
-
-const API_BASE = "https://www.themealdb.com/api/json/v1/1";
-
-const fetchJSON = async (url) => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Network error");
-  return res.json();
-};
+import fetchSafe from "../networks/fetchSafe";
+import { API } from "../networks/api";
 
 export async function searchMeals(query) {
   const trimmed = query.trim();
   if (!trimmed) return [];
 
-  const ingredients = trimmed.split(",").map((s) => s.trim()).filter(Boolean);
+  const ingredients = trimmed
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   try {
+    //  Multi-ingredient search (intersection)
     if (ingredients.length > 1) {
-      // 🍳 Multi-ingredient search (intersection)
       const ingredientPromises = ingredients.map((ing) =>
-        fetchJSON(`${API_BASE}/filter.php?i=${encodeURIComponent(ing)}`)
-          .then((data) => data.meals || [])
+        fetchSafe
+          .get(API.Filter_Ingredient(encodeURIComponent(ing)))
+          .then((res) => res.data.meals || [])
       );
 
       const allResults = await Promise.all(ingredientPromises);
@@ -34,15 +31,15 @@ export async function searchMeals(query) {
       return intersection || [];
     }
 
-    // 🔍 Single term — Dish first
-    const dishRes = await fetchJSON(`${API_BASE}/search.php?s=${encodeURIComponent(trimmed)}`);
-    if (dishRes.meals) return dishRes.meals;
+    //  Single term — Dish first
+    const dishRes = await fetchSafe.get(API.SEARCH_DISH(encodeURIComponent(trimmed)));
+    if (dishRes.data?.meals) return dishRes.data.meals;
 
-    // 🥦 Fallback to ingredient
-    const ingredientRes = await fetchJSON(`${API_BASE}/filter.php?i=${encodeURIComponent(trimmed)}`);
-    return ingredientRes.meals || [];
+    // Fallback to ingredient
+    const ingredientRes = await fetchSafe.get(API.Filter_Ingredient(encodeURIComponent(trimmed)));
+    return ingredientRes.data?.meals || [];
   } catch (err) {
-    console.error("Search failed:", err);
+    console.error("Search failed:", err.message);
     return [];
   }
 }
