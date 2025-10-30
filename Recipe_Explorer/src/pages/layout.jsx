@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import SearchBar from "../components/SeachBar";
 
 function Header() {
   const [search, setSearch] = useState("");
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log("Searching for:", search);
-    // You can later hook this up to your search API or filter logic
-  };
+  const navigate = useNavigate();
 
   return (
     <header className="bg-white shadow-md px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-0 z-10">
@@ -19,24 +15,7 @@ function Header() {
       </Link>
 
       {/* Center: Search */}
-      <form
-        onSubmit={handleSearch}
-        className="flex-1 max-w-md w-full flex items-center border border-gray-300 rounded-lg overflow-hidden"
-      >
-        <input
-          type="text"
-          placeholder="Search recipes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-grow px-4 py-2 focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="bg-yellow-500 text-white px-4 py-2 hover:bg-yellow-600 transition"
-        >
-          Search
-        </button>
-      </form>
+      <SearchBar onSelect={(id) => navigate(`/dish/${id}`)} />
 
       {/* Right: Buttons */}
       <div className="flex gap-3">
