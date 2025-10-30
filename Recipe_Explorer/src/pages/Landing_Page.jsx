@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDisplay } from "../context/DisplayContext";
 import Button from "../components/Button";
 import CuisineDropdown from "../components/Cusine_Dropdown";
 import DisplayGrid from "../components/Display_Grid";
@@ -7,10 +7,7 @@ import fetchSafe from "../networks/fetchSafe";
 import { API } from "../networks/api";
 
 const Landing_Page = ()=>{
-    const [selectedCuisine, setSelectedCuisine] = useState({
-        type: "allCategory",
-        value: "allCategory"
-    });
+    const { currentState, goForward, goBack, resetState } = useDisplay();
     const navigate = useNavigate();
 
     const handleSurpriseMe = async () => {
@@ -33,8 +30,8 @@ const Landing_Page = ()=>{
     return (<>
         <div className="flex flex-wrap justify-center items-center gap-4 my-6">
             <CuisineDropdown
-                selectedCuisine={selectedCuisine}
-                onSelectCuisine={setSelectedCuisine}
+                selectedCuisine={currentState}
+                onSelectCuisine={goForward}
             />
             <div className="flex gap-4">
                 <Button
@@ -49,11 +46,16 @@ const Landing_Page = ()=>{
                     color="gray"
                     variant="outline"
                     className="w-full sm:w-auto"
-                    onClick={()=>setSelectedCuisine({ type: "Ingredients", value: "Ingredients" })}
+                    onClick={()=>goForward({ type: "Ingredients", value: "Ingredients" })}
                 />
             </div>
         </div>
-        <DisplayGrid displayItem={selectedCuisine} setDisplayItem={setSelectedCuisine}/>
+        <div className="flex justify-between items-center mb-6">
+            {currentState.type !== "allCategory" && (
+            <Button text="Back" onClick={goBack} color="gray" />
+            )}
+        </div>
+        <DisplayGrid displayItem={currentState} setDisplayItem={goForward}/>
     </>
   );
 }
